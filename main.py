@@ -5,6 +5,11 @@ import random
 
 SIZE = 40
 BG_color = (64, 230, 108)
+difficulty = 6
+fps_controller = pygame.time.Clock()
+frame_size_x = 800
+frame_size_y = 600
+# snake_pos = [SIZE]*length
 
 
 class Apple:
@@ -62,7 +67,6 @@ class Snake:
             self.y[0] -= SIZE
         if self.direction == 'down':
             self.y[0] += SIZE
-
         self.draw()
 
     def draw(self):
@@ -71,21 +75,33 @@ class Snake:
             self.screen.blit(self.block, (self.x[i], self.y[i]))
         pygame.display.flip()
 
+    def bound_out(self, length):
+        self.x = [SIZE] * length
+        self.y = [SIZE] * length
+        if self.x[0] < 0 or self.x[0] > frame_size_x:
+            Game.game_over_mess()
+        elif self.y[0] < 0 or self.y[0] > frame_size_y:
+            Game.game_over_mess()
+        else:
+            return False
+
 
 class Game:
     def __init__(self):
         pygame.init()
-        self.surface = pygame.display.set_mode((800, 600))
+        pygame.display.set_caption("Snake Game")
+        self.surface = pygame.display.set_mode((frame_size_x, frame_size_y))
         self.surface.fill((64, 230, 108))
         self.snake = Snake(self.surface, 1)
         self.snake.draw()
         self.apple = Apple(self.surface)
         self.apple.draw()
 
-    def is_collision(self, x1, y1, x2, y2):
-        if x1 >= x2 and x1 < x2 + SIZE:
-            if y1 >= y2 and y1 < y2 + SIZE:
+    def is_collision(self, x1, y1, x2, y2,):
+        if x2 <= x1 < x2 + SIZE:
+            if y2 <= y1 < y2 + SIZE:
                 return True
+
         return False
 
     def play(self):
@@ -145,8 +161,8 @@ class Game:
                         if event.key == K_DOWN:
                             self.snake.move_down()
 
-                    elif event.type == QUIT:
-                        running = False
+                elif event.type == QUIT:
+                    running = False
 
             try:
                 if not pause:
@@ -155,11 +171,13 @@ class Game:
                 self.game_over_mess()
                 pause = True
                 self.reset()
-            time.sleep(0.3)
+            fps_controller.tick(difficulty)
+
 
 
 if __name__ == "__main__":
     game = Game()
     game.run()
+
 
 
