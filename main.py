@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import *
-import time
 import random
+pygame.font.init()
+import menu
 
 SIZE = 40
 BG_color = (64, 230, 108)
@@ -84,6 +85,7 @@ class Snake:
             Game.game_over_mess()
         else:
             return False
+        
 
 
 class Game:
@@ -140,6 +142,7 @@ class Game:
         pause = False
 
         while running:
+
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:

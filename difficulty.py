@@ -2,7 +2,7 @@ import pygame
 pygame.font.init()
 
 surface = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Menu")
+pygame.display.set_caption("DIFFICULTY")
 surface.fill((64, 230, 108))
 
 
@@ -45,24 +45,24 @@ class Button():
         return action
         
 
-start_btn = Button(400, 150, start, "START")
-speed_btn = Button(400, 300, speed, "DIFFICULTY")
-exit_btn = Button(400, 450, exit, "EXIT")
+start_btn = Button(400, 150, start, "EASY")
+speed_btn = Button(400, 300, speed, "STANDARD")
+exit_btn = Button(400, 450, exit, "HARDCORE")
     
 running = True
 
 while running:
     if start_btn.draw():
-        running = False
+        print("EASY")
                 
     if exit_btn.draw():
-        running = False
+        print("HARDCORE")
 
     if speed_btn.draw():
-        print("SPEED")
+        print("STANDARD")
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     pygame.display.update()    
-pygame.quit()    
+pygame.quit() 
